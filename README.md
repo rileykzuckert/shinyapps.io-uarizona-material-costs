@@ -1,4 +1,4 @@
-# shinyapps.io-uarizona-material-costs
+# UArizona textbook and homework access code costs for Fall 2021 semester
 
 shinyapps.io interactive visualization of how much UArizona students spent on homework materials for the Fall 2021 semester
 

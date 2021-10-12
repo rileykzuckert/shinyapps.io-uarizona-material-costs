@@ -7,7 +7,6 @@
 #    http://shiny.rstudio.com/
 #
 
-library(ggrepel)
 library(RColorBrewer)
 library(shiny)
 library(tidyverse)
@@ -45,6 +44,11 @@ student_costs_altered$price_range[student_costs_altered$price_range == '$600-$69
 student_costs_altered$price_range[student_costs_altered$price_range == '$700-$799'] <- '8'
 student_costs_altered$price_range[student_costs_altered$price_range == '$800+'] <- '9'
 student_costs_altered$price_range = as.numeric(student_costs_altered$price_range)
+
+# create df for overall student totals
+price_ranges = c('$0', '$1-$99', '$100-$199', '$200-$299', '$300-$399', '$400-$499', '$500-$599', '$600-$699', '$800+')
+percentages = c(23.23, 18.71, 27.74, 16.13, 7.74, 1.94, 0.65, 0.65, 3.23)
+overall_spending = data.frame(price_ranges, percentages)
 
 # Define UI for application that draws a histogram
 ui <- fluidPage(
@@ -99,10 +103,12 @@ server <- function(input, output) {
                    y = price_range,
                    fill=price_range)) +
         geom_col(data=highlighted_region) +
+        #geom_label(fill='white') +
         labs(x = 'Number of students',
              y = 'Price range',
              caption = 'Price range intervals skipped where no student responses present',
-             fill = 'Purchase values') +
+             fill = 'Purchase values',
+             title = 'Frequency of the number of students who paid for materials per price range') +
         scale_fill_manual(values = brewer.pal(9, 'Reds')) +
         theme_minimal() +
         theme(legend.position = 'none')
@@ -124,13 +130,19 @@ server <- function(input, output) {
         theme_minimal() +
         labs(x = 'Grade level',
              y = 'Price range',
-             caption='Price range intervals skipped where no student responses present') +
+             caption='Price range intervals skipped where no student responses present',
+             title = 'Distribution of material prices per grade level') +
         theme(legend.position = 'none') +
         scale_y_discrete(limits=c('$0', '$1-$99', '$100-$199', '$200-$299', '$300-$399', '$400-$499', '$500-$599', '$600-$699', '$800+'))
     })
       
     
     output$pie_chart <- renderPlot({
+      
+      overall_spending = overall_spending %>% 
+        arrange(desc(price_ranges)) %>% 
+        mutate(prop=percentages / sum(overall_spending$percentage) * 100) %>% 
+        mutate(ypos=cumsum(prop) - 0.5*prop)
       
       ggplot(overall_spending,
              aes(x='',
@@ -143,8 +155,7 @@ server <- function(input, output) {
         labs(x = '',
              y = '',
              caption = 'Price range intervals skipped where no student responses present',
-             fill = 'Price range',
-             title = 'Overall price distribution for student materials')
+             fill = 'Price range')
     })
 }
 

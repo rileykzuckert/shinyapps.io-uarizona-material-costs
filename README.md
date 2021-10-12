@@ -15,4 +15,4 @@ Data description: The variables collected from the talk back board to be input i
 Overview of the visualizations:
 1. Bar graphs depicting how many students from the survey paid for materials at each price range, grouped by material and level.
 2. Box plots displaying the distribution of student material costs, grouped by material and level.
-3. Pie chart displaying the overall percentages of students that paid for materials in each price range, grouped by material.
+3. Pie chart displaying the overall distribution of student payments for materials.

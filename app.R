@@ -6,6 +6,9 @@
 #
 #    http://shiny.rstudio.com/
 #
+# configure shinyapps.io for publishing
+# install.packages('rsconnect')
+libraries(rsconnect)
 
 library(RColorBrewer)
 library(shiny)

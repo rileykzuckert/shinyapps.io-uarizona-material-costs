@@ -155,7 +155,8 @@ server <- function(input, output) {
         labs(x = '',
              y = '',
              caption = 'Price range intervals skipped where no student responses present',
-             fill = 'Price range')
+             fill = 'Price range',
+             title = 'Overall student spending on all materials')
     })
 }
 
